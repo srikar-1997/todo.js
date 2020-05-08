@@ -11,8 +11,7 @@ class Task {
     toString() {
         let htmlText = '<li class="task" ><div>'
         htmlText += this.name
-        htmlText += ", " + this.dueDate.getDate() 
-                 + "/" + this.dueDate.getMonth();
+        htmlText += ", " + this.dueDate
         htmlText += '<input type="checkbox" name="isDone" id="isDone">'
         htmlText += '<button onclick="deleteTask(';
         htmlText += this.taskId;
@@ -47,7 +46,8 @@ function deleteTask(taskId) {
 
 function createTask() {
     const taskName = document.getElementById("taskName").value;
-    addTask(new Task(taskName, new Date(), false));
+    const date = document.getElementById("myDate").value
+    addTask(new Task(taskName, date, false));
 }
 
 function addTask(t) {
@@ -57,18 +57,18 @@ function addTask(t) {
     console.log(taskList)
 }
 
-function init() {
-    console.log("init called");
+// function init() {
+//     console.log("init called");
 
-    // call a web api to retrieve the task list
-    // write a function to send a api request
-    // get the JSON
-    // assign it to taskList
-    // render
+//     // call a web api to retrieve the task list
+//     // write a function to send a api request
+//     // get the JSON
+//     // assign it to taskList
+//     // render
 
-    task = new Task("welcome task", new Date("May 30, 2020"), false);
-    addTask(task);
-    console.log(task);
-}
+//     task = new Task("welcome task", new Date("May 30, 2020"), false);
+//     addTask(task);
+//     console.log(task);
+// }
 
-init();
+// init();
