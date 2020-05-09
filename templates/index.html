@@ -9,6 +9,8 @@
     <input type="text" name="taskName" id="taskName">
     <input type="date" id="myDate">
     <button onclick="createTask()">Add Task</button>
-    <script src="todo-app.js"></script>
+
+    <div id="result"></div>
+    <script src="{{url_for('static', filename='todo-app.js')}}"></script>
 </body>
 </html>
