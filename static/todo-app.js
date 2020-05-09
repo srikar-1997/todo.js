@@ -120,17 +120,20 @@ function init() {
     // assign it to taskList
     // render
     const request = new XMLHttpRequest();
-    request.open('GET', '/api/taskList');
+    request.open('POST', '/api/taskList');
     request.onload = () => { 
     const data = JSON.parse(request.responseText);
-    console.log(data)
-    console.log("init called");
+    count = 0;
+    for (let i = 0; i < data.taskList.length; i++) {
 
-    for (let i = 0; i < data.tasks.length; i++) {
-        taskList.push(data.tasks[i])
+        taskList.push(new Task(data.taskList[i].taskId, data.taskList[i].name, data.taskList[i].date, data.taskList[i].isDone))
+        count++;
     }
     render()
     }
+    const data = new FormData()
+    data.append('id', "hi")
+    request.send(data)
     return false
 }
 
