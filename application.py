@@ -41,13 +41,36 @@ def addTask():
 @app.route("/api/deleteTask", methods = ["POST"])
 def deleteTask():
     id = request.form.get('id')
+    taskList = []
+    with open('person.json', 'r') as f:
+        for jsonObj in f.readlines():
+            if not jsonObj.strip():
+                continue
+            else :
+                taskObj = json.loads(jsonObj)
+                if not taskObj['taskId'] == int(id):
+                    taskList.append(jsonObj)
+    with open('person.json', 'w') as f:
+        f.writelines(''.join(taskList))
+    return jsonify({"success" : True})
+
+@app.route("/api/markTask", methods = ["POST"])
+def markTask():
+    id = request.form.get('id')
     print(id)
     taskList = []
     with open('person.json', 'r') as f:
         for jsonObj in f.readlines():
-            taskObj = json.loads(jsonObj)
-            if not taskObj['taskId'] == int(id):
-                taskList.append(jsonObj)
+            if not jsonObj.strip():
+                continue
+            else: 
+                taskObj = json.loads(jsonObj)
+                if not taskObj['taskId'] == int(id):
+                    taskList.append(jsonObj)
+                else :
+                    taskObj['isDone'] = True
+                    jsonObj = json.dumps(taskObj)
+                    taskList.append(jsonObj + "\n")
     with open('person.json', 'w') as f:
         f.writelines(''.join(taskList))
     return jsonify({"success" : True})

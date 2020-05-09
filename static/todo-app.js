@@ -95,6 +95,21 @@ function markTask(taskId) {
             document.getElementById(task.name).innerHTML = '<s>'+task.name+'</s>'
         }
     })
+
+    const request = new XMLHttpRequest();
+    const id = taskId
+    request.open('POST', '/api/markTask');
+    request.onload = () => { 
+    const data = JSON.parse(request.responseText);
+
+    if (data.success) {
+        document.getElementById("result").innerHTML = "Task marked in json file"
+    }
+    }
+    const data = new FormData()
+    data.append('id', id)
+    request.send(data)
+    return false
 }
 
 function init() {
@@ -105,7 +120,7 @@ function init() {
     // assign it to taskList
     // render
     const request = new XMLHttpRequest();
-    request.open('POST', '/api/taskList');
+    request.open('GET', '/api/taskList');
     request.onload = () => { 
     const data = JSON.parse(request.responseText);
     console.log(data)
