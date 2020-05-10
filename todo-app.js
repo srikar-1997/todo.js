@@ -1,5 +1,5 @@
 function Task(props) {
-    return <li>{props.name}, {props.dueDate.toLocaleTimeString()}</li>
+    return <li>{props.name}, {props.dueDate}, {props.delete}</li>
 }
 
 class TodoList extends React.Component {
@@ -8,11 +8,19 @@ class TodoList extends React.Component {
         this.state = {list: props.list};
 
         this.handleAddTask = this.handleAddTask.bind(this);
+        this.handleDeleteTask = this.handleDeleteTask.bind(this)
     }
     handleAddTask(task) {
         console.log("add task clicked");
         this.state.list.push(task);
         this.setState({list: this.state.list})
+    }
+    handleDeleteTask(id) {
+        console.log("delete task clicked")
+        this.state.list.map((t) => 
+        if (t.id != id) {
+            return t
+        }
     }
     render() {
         return (
@@ -21,10 +29,10 @@ class TodoList extends React.Component {
                 <ol>
                     {
                         this.state.list.map((t) =>
-                            <Task key={t.id} name={t.name} dueDate={t.dueDate} />)
+                            <Task key={t.id} name={t.name} dueDate={t.dueDate} delete = {t.delete}/>)
                     }
                 </ol>
-                <TaskNameForm onAddTask={this.handleAddTask} />
+                <TaskNameForm onAddTask={this.handleAddTask} onDeleteTask={this.handleDeleteTask} />
             </div>
         );
     }
@@ -33,7 +41,7 @@ class TodoList extends React.Component {
 class TaskNameForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {value: ''};
+        this.state = {taskName: '', date: ''};
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -43,21 +51,32 @@ class TaskNameForm extends React.Component {
         const taskList = this.props.taskList;
         // create a task object
         event.preventDefault();
-        const task = {id:Date.now(), name: this.state.value, 
-        dueDate: new Date()};
+        const id = Date.now()
+        // console.log(id)
+        const task = {id: id, name: this.state.taskName, 
+        dueDate: this.state.date, delete: <button onClick={() => this.deleteTask(id)}>Delete</button>};
         // add the task object to the task list
         this.props.onAddTask(task);
     }
 
+    deleteTask(id) {
+        console.log("delete clicked")
+        // console.log(id)
+        this.props.onDeleteTask(id);
+    }
+
     handleChange(event) {
+        const target = event.target
         // code to set the state of the component
-        this.setState({value: event.target.value});
+        this.setState({[target.name]:target.value});
     }
 
     render() {
         return(
             <form onSubmit={this.handleSubmit}>
-                <input type="text" value={this.state.value} 
+                <input name = "taskName" type="text" value={this.state.taskName} 
+                onChange={this.handleChange}/>
+                <input name = "date" type="date" value={this.state.date} 
                 onChange={this.handleChange}/>
                 <input type="submit" value="Add Task" />
             </form>
