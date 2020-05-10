@@ -17,10 +17,12 @@ class TodoList extends React.Component {
     }
     handleDeleteTask(id) {
         console.log("delete task clicked")
-        this.state.list.map((t) => 
-        if (t.id != id) {
-            return t
-        }
+        this.list = this.state.list.filter((t) => {
+            if (t.id != id) {
+                return t;
+            }
+        })
+        this.setState({list: this.list})
     }
     render() {
         return (
@@ -60,7 +62,6 @@ class TaskNameForm extends React.Component {
     }
 
     deleteTask(id) {
-        console.log("delete clicked")
         // console.log(id)
         this.props.onDeleteTask(id);
     }
